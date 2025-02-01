@@ -1,7 +1,6 @@
 package com.example.rockpaperscissors
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,9 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -80,7 +77,6 @@ fun GameStart(modifier: Modifier = Modifier) {
     )
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameTopAppBar(modifier: Modifier = Modifier) {
@@ -91,12 +87,12 @@ fun GameTopAppBar(modifier: Modifier = Modifier) {
                     painter = painterResource(R.drawable.game_logo),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(40.dp) // Adjust size as needed
-                        .clip(CircleShape) // Makes the image round
-                        .border(2.dp, Color.White, CircleShape) // Optional: Adds a border
-                        .background(Color.Gray) // Optional: Background in case image has transparency
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color.White, CircleShape)
+                        .background(Color.Gray)
                 )
-                Spacer(modifier = Modifier.width(8.dp)) // Adds spacing between image and text
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.rock_paper_scissors),
                     style = MaterialTheme.typography.displayMedium.copy(fontSize = 24.sp),
@@ -111,14 +107,13 @@ fun GameTopAppBar(modifier: Modifier = Modifier) {
     )
 }
 
-
 @Composable
 fun GameBottomBar(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color(0xFF0B14CE)) // Set background color for the bottom bar
-            .padding(16.dp) // Add padding inside the bottom bar
+            .background(Color(0xFF0B14CE))
+            .padding(16.dp)
     ) {
         Text(
             text = stringResource(R.string.created_by),
@@ -138,175 +133,165 @@ fun GameView(modifier: Modifier = Modifier) {
     val rock = painterResource(R.drawable.rock)
     val paper = painterResource(R.drawable.paper)
     val scissors = painterResource(R.drawable.scissors)
-    // Fetch string resources inside the Composable
 
     val choices = listOf(
         stringResource(R.string.computer_chose_rock),
         stringResource(R.string.computer_chose_paper),
         stringResource(R.string.computer_chose_scissors)
     )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(R.drawable.game_logo),
+            contentDescription = null,
+            modifier = Modifier.size(200.dp)
+        )
+        // Header text
+        Text(
+            text = stringResource(R.string.pick_your_choice),
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp),
+        )
 
-//    val scrollState = rememberScrollState()
-
-
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .wrapContentSize(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
+        // Row of buttons
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(R.drawable.game_logo),
-                contentDescription = null,
-                modifier = Modifier.size(200.dp)
-            )
-            // Header text
-            Text(
-                text = stringResource(R.string.pick_your_choice),
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp), // Adjust font size
-            )
-
-            // Row of buttons
-            Row(
+            Button(
+                onClick = {
+                    playerChoice = "Rock"
+                    computerChoice = getComputerChoice(choices)
+                    result = matchResult(playerChoice, computerChoice)
+                },
+                shape = MaterialTheme.shapes.large,
                 modifier = Modifier
-                    .fillMaxWidth() // Make the row stretch across
-                    .padding(horizontal = 32.dp), // Add padding on the sides for spacing
-                horizontalArrangement = Arrangement.Center, // Center buttons horizontally
-                verticalAlignment = Alignment.CenterVertically // Center buttons vertically
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6200EE),
+                    contentColor = Color.White
+                )
             ) {
-                Button(
-                    onClick = {
-                        playerChoice = "Rock"
-                        computerChoice = getComputerChoice(choices)
-                        result = matchResult(playerChoice, computerChoice)
-                    },
-                    shape = MaterialTheme.shapes.large, // Rounded corners
+                Image(
+                    painter = rock,
+                    contentDescription = null,
                     modifier = Modifier
-                        .padding(8.dp), // Padding between buttons
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF6200EE), // Set background color
-                        contentColor = Color.White // Text color
-                    )
-                ) {
-                 Image(
-                     painter = rock,
-                     contentDescription = null,
-                     modifier = Modifier.size(40.dp)
-                         .zIndex(1f)
-                 )
+                        .size(40.dp)
+                        .zIndex(1f)
+                )
 
-                }
-
-                Button(
-                    onClick = {
-                        playerChoice = "Paper"
-                        computerChoice = getComputerChoice(choices)
-                        result = matchResult(playerChoice, computerChoice)
-                    },
-                    shape = MaterialTheme.shapes.large, // Rounded corners
-                    modifier = Modifier
-                        .padding(8.dp), // Padding between buttons
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF6200EE), // Set background color
-                        contentColor = Color.White // Text color
-                    )
-                ) {
-                    Image(
-                        painter = paper,
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp)
-                            .zIndex(1f)
-                    )
-                }
-
-                Button(
-                    onClick = {
-                        playerChoice = "Scissors"
-                        computerChoice = getComputerChoice(choices)
-                        result = matchResult(playerChoice, computerChoice)
-                    },
-                    shape = MaterialTheme.shapes.large, // Rounded corners
-                    modifier = Modifier
-                        .padding(8.dp) // Padding between buttons
-                        .weight(1f), // Make buttons take equal width
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF6200EE), // Set background color
-                        contentColor = Color.White // Text color
-                    )
-                ) {
-                    Image(
-                        painter = scissors,
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp)
-                            .zIndex(1f)
-                    )
-                }
             }
-            if (computerChoice.isNotEmpty()) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(16.dp) // Padding around the column
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically, // Align text vertically in the middle
-                        modifier = Modifier
-                            .fillMaxWidth() // Make row take up the full width
-                            .padding(8.dp) // Padding inside the row
-                            .background(
-                                Color(0xFF6200EE),
-                                shape = MaterialTheme.shapes.medium
-                            ) // Background with rounded corners
-                            .padding(12.dp) // Inner padding for the text
-                    ) {
-                        Text(
-                            text = stringResource(R.string.computer_chose),
-                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                            color = Color.White
-                        )
-                        Spacer(modifier = Modifier.width(8.dp)) // Spacer between texts
-                        Text(
-                            text = computerChoice,
-                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                            color = Color.White
-                        )
-                    }
 
-                    // Result text
-                    Text(
-                        text = result,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
-                        ),
-                        color = if (result.contains(
-                                "win",
-                                true
-                            )
-                        ) Color.Green else Color.Red, // Green for win, red for loss
-                        modifier = Modifier
-                            .padding(top = 16.dp) // Top padding for separation from the row
-                            .background(
-                                Color(0xFFF1F1F1),
-                                shape = MaterialTheme.shapes.medium
-                            ) // Light background for result text
-                            .padding(16.dp) // Inner padding for the result text
-                    )
-                }
+            Button(
+                onClick = {
+                    playerChoice = "Paper"
+                    computerChoice = getComputerChoice(choices)
+                    result = matchResult(playerChoice, computerChoice)
+                },
+                shape = MaterialTheme.shapes.large,
+                modifier = Modifier
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6200EE),
+                    contentColor = Color.White
+                )
+            ) {
+                Image(
+                    painter = paper,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .zIndex(1f)
+                )
+            }
+
+            Button(
+                onClick = {
+                    playerChoice = "Scissors"
+                    computerChoice = getComputerChoice(choices)
+                    result = matchResult(playerChoice, computerChoice)
+                },
+                shape = MaterialTheme.shapes.large,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(1f),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6200EE),
+                    contentColor = Color.White
+                )
+            ) {
+                Image(
+                    painter = scissors,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .zIndex(1f)
+                )
             }
         }
+        if (computerChoice.isNotEmpty()) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .background(
+                            Color(0xFF6200EE),
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.computer_chose),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.width(8.dp)) // Spacer between texts
+                    Text(
+                        text = computerChoice,
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = Color.White
+                    )
+                }
 
-
-        // remove this line for main game just for preview
-//        computerChoice = getComputerChoice(choices)
-        // Display the updated choice
-
-
+                // Result text
+                Text(
+                    text = result,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    ),
+                    color = if (result.contains(
+                            "win",
+                            true
+                        )
+                    ) Color.Green else Color.Red,
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .background(
+                            Color(0xFFF1F1F1),
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(16.dp)
+                )
+            }
+        }
+    }
 }
 
 fun getComputerChoice(choices: List<String>): String {
     return choices.random()
 }
-
 
 fun matchResult(
     playerChoice: String,
@@ -323,7 +308,7 @@ fun matchResult(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun GamePreview() {
     RockPaperScissorsTheme {
         GameStart(modifier = Modifier)
     }
