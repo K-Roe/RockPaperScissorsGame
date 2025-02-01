@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">RockPaperScissors</string>
+    <string name="pick_your_choice">Pick your choice</string>
+    <string name="computer_chose_rock">Rock</string>
+    <string name="computer_chose_paper">Paper</string>
+    <string name="computer_chose_scissors">Scissors</string>
+    <string name="rock">Rock</string>
+    <string name="paper">Paper</string>
+    <string name="scissors">Scissors</string>
+    <string name="tie">You Both Choice the same answer and is now a tie</string>
+    <string name="winner">Well done you won the game</string>
+    <string name="lose">Sorry you lost the game please try again!</string>
+    <string name="computer_chose">Computer Chose: </string>
+    <string name="rock_paper_scissors">Rock Paper Scissors</string>
+    <string name="created_by">Created by Karl Roe</string>
+</resources>
